@@ -1,0 +1,26 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    # bundle exec で起動することで、Windows製 binstub(ruby.exe) の問題を回避
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0"
+    ports:
+      - "3000:3000"
+    volumes:
+      # ソースコードをマウントしてコード変更を即反映
+      - .:/rails
+      # gem のインストール結果をコンテナ内に保持
+      - bundle:/usr/local/bundle
+      # SQLite の DB は Linux 側ボリュームに置く
+      # （Windows バインドマウント上だと WAL で disk I/O error になるため）
+      - storage:/rails/storage
+    environment:
+      RAILS_ENV: development
+    tty: true
+    stdin_open: true
+
+volumes:
+  bundle:
+  storage:

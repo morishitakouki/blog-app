@@ -1,0 +1,12 @@
+<% content_for :title, "記事を編集" %>
+
+<div class="col-head">
+  <%= link_to @article, class: "back-link", aria: { label: "戻る" } do %>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+  <% end %>
+  <h1>記事を編集</h1>
+</div>
+
+<div class="form-card">
+  <%= render "form", article: @article %>
+</div>

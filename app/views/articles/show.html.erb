@@ -1,0 +1,36 @@
+<% content_for :title, @article.title %>
+
+<div class="col-head">
+  <%= link_to articles_path, class: "back-link", aria: { label: "戻る" } do %>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+  <% end %>
+  <h1>記事</h1>
+</div>
+
+<article class="article-full">
+  <div class="post-head">
+    <%= link_to user_avatar(@article.user, size: 48), profile_path(@article.user), aria: { label: "#{@article.user.name}のプロフィール" } %>
+    <span class="who" style="line-height:1.3">
+      <b><%= link_to @article.user.name, profile_path(@article.user), class: "post-name" %></b>
+      <span>@<%= @article.user.handle %></span>
+    </span>
+  </div>
+
+  <h1 class="full-title"><%= @article.title %></h1>
+  <div class="full-body"><%= simple_format @article.body %></div>
+
+  <p class="full-time"><%= l @article.created_at, format: :long if @article.created_at %></p>
+
+  <div class="post-actions">
+    <span class="act comment" aria-hidden="true"><span class="act-ico"><%= comment_icon %></span></span>
+    <%= render "articles/like_button", article: @article %>
+  </div>
+
+  <% if user_signed_in? && @article.user == current_user %>
+    <div class="owner-actions">
+      <%= link_to "編集", edit_article_path(@article), class: "btn ghost" %>
+      <%= button_to "削除", @article, method: :delete, class: "btn danger",
+            form: { data: { turbo_confirm: "この記事を削除しますか？" } } %>
+    </div>
+  <% end %>
+</article>

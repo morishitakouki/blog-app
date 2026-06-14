@@ -1,0 +1,46 @@
+<nav class="rail" aria-label="メインナビゲーション">
+  <%= link_to root_path, class: "brand", "aria-label": "綴り ホーム" do %>
+    <span class="brand-mark">綴</span>
+    <span class="brand-sub">Tsuzuri</span>
+  <% end %>
+
+  <%= link_to root_path, class: "nav-link #{'is-active' if current_page?(root_path)}" do %>
+    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+    <span>ホーム</span>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <%= link_to mypage_path, class: "nav-link #{'is-active' if current_page?(mypage_path) || current_page?(profile_path(current_user))}" do %>
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span>マイページ</span>
+    <% end %>
+
+    <%= link_to settings_path, class: "nav-link #{'is-active' if current_page?(settings_path)}" do %>
+      <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a7.97 7.97 0 0 0 0-6l1.6-1.3-2-3.4-2 .8a8 8 0 0 0-5-2.9L11.5 1h-4l-.5 2.2a8 8 0 0 0-5 2.9l-2-.8-2 3.4L-.4 9"/></svg>
+      <span>設定</span>
+    <% end %>
+
+    <%= link_to new_article_path, class: "compose-btn" do %>
+      <span class="label">記事を書く</span><span aria-hidden="true" class="plus">＋</span>
+    <% end %>
+
+    <div class="rail-spacer"></div>
+
+    <%= link_to mypage_path, class: "user-chip" do %>
+      <%= user_avatar(current_user, size: 40) %>
+      <span class="who">
+        <b><%= current_user.name %></b>
+        <span>@<%= current_user.handle %></span>
+      </span>
+      <span class="signout">
+        <%= button_to "ログアウト", destroy_user_session_path, method: :delete %>
+      </span>
+    <% end %>
+  <% else %>
+    <div class="rail-spacer"></div>
+    <div class="rail-auth">
+      <%= link_to "ログイン", new_user_session_path, class: "btn ghost", style: "justify-content:center" %>
+      <%= link_to "新規登録", new_user_registration_path, class: "btn", style: "justify-content:center" %>
+    </div>
+  <% end %>
+</nav>

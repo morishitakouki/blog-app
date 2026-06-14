@@ -1,0 +1,24 @@
+<article id="<%= dom_id article %>" class="post">
+  <div class="post-aside">
+    <%= link_to user_avatar(article.user, size: 44), profile_path(article.user), aria: { label: "#{article.user.name}のプロフィール" } %>
+  </div>
+
+  <div class="post-main">
+    <div class="post-head">
+      <%= link_to article.user.name, profile_path(article.user), class: "post-name" %>
+      <span class="post-handle">@<%= article.user.handle %></span>
+      <span class="post-dot">·</span>
+      <%= link_to time_ago_label(article.created_at), article, class: "post-time" %>
+    </div>
+
+    <h2 class="post-title"><%= link_to article.title, article %></h2>
+    <div class="post-excerpt"><%= simple_format(article.body) %></div>
+
+    <div class="post-actions">
+      <%= link_to article, class: "act comment", aria: { label: "記事を読む" } do %>
+        <span class="act-ico"><%= comment_icon %></span>
+      <% end %>
+      <%= render "articles/like_button", article: article %>
+    </div>
+  </div>
+</article>

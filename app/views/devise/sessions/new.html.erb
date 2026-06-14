@@ -1,0 +1,34 @@
+<% content_for :title, "ログイン" %>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <span class="brand-mark">綴</span>
+      <h2 style="text-align:center; margin-top:.4rem;">おかえりなさい</h2>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="field">
+        <%= f.label :email, "メールアドレス" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password, "パスワード" %>
+        <%= f.password_field :password, autocomplete: "current-password" %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <label style="display:flex; align-items:center; gap:.5rem; font-size:.9rem; color:var(--ink-soft);">
+          <%= f.check_box :remember_me, style: "width:auto" %> ログイン状態を保持する
+        </label>
+      <% end %>
+
+      <div class="actions">
+        <%= f.submit "ログイン" %>
+      </div>
+    <% end %>
+
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

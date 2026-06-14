@@ -1,0 +1,27 @@
+<%= form_with(model: article, class: "compose") do |form| %>
+  <% if article.errors.any? %>
+    <div class="error-box">
+      <strong><%= pluralize(article.errors.count, "件") %>のエラーがあります</strong>
+      <ul>
+        <% article.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field compose-title">
+    <%= form.label :title, "タイトル", class: "sr-only" %>
+    <%= form.text_field :title, placeholder: "タイトル", autofocus: true %>
+  </div>
+
+  <div class="field compose-body">
+    <%= form.label :body, "本文", class: "sr-only" %>
+    <%= form.text_area :body, placeholder: "いま、何を綴る？" %>
+  </div>
+
+  <div class="compose-foot">
+    <%= link_to "キャンセル", (article.persisted? ? article_path(article) : root_path), class: "btn ghost" %>
+    <%= form.submit (article.persisted? ? "更新する" : "公開する"), class: "btn" %>
+  </div>
+<% end %>

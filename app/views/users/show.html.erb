@@ -1,0 +1,56 @@
+<% content_for :title, @user.name %>
+<% is_me = user_signed_in? && current_user == @user %>
+<% likes_received = @user.articles.joins(:likes).count %>
+
+<div class="col-head">
+  <%= link_to root_path, class: "back-link", aria: { label: "戻る" } do %>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+  <% end %>
+  <div>
+    <h1><%= @user.name %></h1>
+    <p class="sub"><%= @articles.size %> 記事</p>
+  </div>
+</div>
+
+<div class="profile-cover" aria-hidden="true"></div>
+
+<div class="profile-head">
+  <div class="profile-top">
+    <%= user_avatar(@user, size: 84) %>
+    <% if is_me %>
+      <%= link_to "プロフィールを編集", settings_path, class: "btn ghost" %>
+    <% end %>
+  </div>
+
+  <h2 class="profile-name"><%= @user.name %></h2>
+  <p class="profile-handle">@<%= @user.handle %></p>
+
+  <% if @user.bio.present? %>
+    <p class="profile-bio"><%= @user.bio %></p>
+  <% end %>
+
+  <div class="profile-stats">
+    <span><b><%= @articles.size %></b> 記事</span>
+    <span><b><%= likes_received %></b> いいねされた</span>
+  </div>
+</div>
+
+<div class="tabbar">
+  <span class="tab is-active">記事</span>
+</div>
+
+<div id="articles">
+  <% if @articles.any? %>
+    <% @articles.each do |article| %>
+      <%= render article %>
+    <% end %>
+  <% else %>
+    <div class="empty">
+      <div class="quill">🪶</div>
+      <h3><%= is_me ? "まだ記事がありません" : "まだ投稿がありません" %></h3>
+      <% if is_me %>
+        <%= link_to "最初の記事を書く", new_article_path, class: "btn", style: "margin-top:.6rem" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,20 @@
+<%# locals: article, (optional) just_liked %>
+<span id="<%= dom_id(article, :like) %>" class="like-cell">
+  <% liked = user_signed_in? && current_user.liked?(article) %>
+  <% just = local_assigns[:just_liked] %>
+  <% if user_signed_in? %>
+    <%= button_to article_like_path(article),
+          method: (liked ? :delete : :post),
+          form_class: "like-form",
+          class: "act like #{'is-liked' if liked} #{'just-liked' if just}",
+          aria: { label: liked ? "いいねを取り消す" : "いいねする" } do %>
+      <span class="act-ico"><%= heart_icon %></span>
+      <span class="act-count"><%= article.likes.size %></span>
+    <% end %>
+  <% else %>
+    <%= link_to new_user_session_path, class: "act like", aria: { label: "ログインしていいねする" } do %>
+      <span class="act-ico"><%= heart_icon %></span>
+      <span class="act-count"><%= article.likes.size %></span>
+    <% end %>
+  <% end %>
+</span>

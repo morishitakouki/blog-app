@@ -1,0 +1,54 @@
+<% content_for :title, "設定" %>
+
+<div class="col-head">
+  <%= link_to mypage_path, class: "back-link", aria: { label: "戻る" } do %>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+  <% end %>
+  <h1>プロフィール設定</h1>
+</div>
+
+<div class="form-card">
+  <%= form_with model: @user, url: settings_path, method: :patch do |f| %>
+    <% if @user.errors.any? %>
+      <div class="error-box">
+        <strong><%= pluralize(@user.errors.count, "件") %>のエラーがあります</strong>
+        <ul>
+          <% @user.errors.full_messages.each do |m| %><li><%= m %></li><% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.4rem;">
+      <%= user_avatar(@user, size: 64) %>
+      <p class="hint" style="margin:0">アバターは表示名の頭文字から自動生成されます。</p>
+    </div>
+
+    <div class="field">
+      <%= f.label :display_name, "表示名" %>
+      <%= f.text_field :display_name, placeholder: "例: 森下 こうき" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :username, "ユーザー名（@ハンドル）" %>
+      <div class="input-prefixed">
+        <span>@</span>
+        <%= f.text_field :username, placeholder: "username" %>
+      </div>
+      <p class="hint">半角英数字と _ の3〜20文字。あなたのプロフィールURLになります。</p>
+    </div>
+
+    <div class="field">
+      <%= f.label :bio, "自己紹介" %>
+      <%= f.text_area :bio, rows: 4, placeholder: "好きなこと、書いていることなど" %>
+    </div>
+
+    <div class="compose-foot">
+      <%= f.submit "変更を保存", class: "btn" %>
+    </div>
+  <% end %>
+
+  <hr style="border:0; border-top:1px solid var(--line-soft); margin:1.6rem 0;">
+
+  <p class="hint" style="margin-bottom:.6rem">アカウント（メールアドレス・パスワード）の変更:</p>
+  <%= link_to "アカウント設定へ", edit_user_registration_path, class: "btn ghost" %>
+</div>
